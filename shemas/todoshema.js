@@ -16,7 +16,8 @@ let todoshema=mongoose.Schema({
     },
     date:{
         type:Date,
-        default:new Date().getDate()
+        default:new Date().getDate(),
+        required:true,
     }
 })
 module.exports =todoshema

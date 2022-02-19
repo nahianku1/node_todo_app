@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="./css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="./css/parsley.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./css/datatables-1.10.25.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap4.css" />
 
@@ -38,17 +39,21 @@
                         <div class="form-group">
                             <label for="exampleInputEmail1">Name</label>
                             <input type="text" class="form-control" name="title" aria-describedby="emailHelp"
-                                placeholder="Name">
+                                placeholder="Name" data-parsley-required="true" data-parsley-pattern="^[a-zA-Z]+$"
+                                data-parsley-trigger="keyup">
 
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Description</label>
-                            <input type="text" class="form-control" name="description" placeholder="Description">
+                            <input type="text" class="form-control" name="description" placeholder="Description"
+                                data-parsley-required="true" data-parsley-pattern="^[a-zA-Z]+$" data-parsley-length="[10,100]"
+                                data-parsley-trigger="keyup">
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputPassword1">Status</label>
-                            <select type="text" class="form-control" name="status" placeholder="Status">
+                            <select type="text" class="form-control" name="status" placeholder="Status"
+                                data-parsley-required="true">
                                 <option value="pending">Pending</option>
                                 <option value="done">Done</option>
                             </select>
@@ -56,7 +61,8 @@
 
                         <div class="form-group">
                             <label for="exampleInputPassword1">Date</label>
-                            <input type="date" class="form-control" name="date" placeholder="Date">
+                            <input type="date" class="form-control" name="date" placeholder="Date"
+                                data-parsley-required="true">
                         </div>
 
                         <div class="modal-footer">
@@ -150,6 +156,7 @@
         </table>
     </div>
     <script src="./js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <script src="./js/parsley.min.js" crossorigin="anonymous"></script>
     <script src="./js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="./js/dt-1.10.25datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.js"></script>
@@ -159,7 +166,7 @@
     <script>
         let mytable
         $(document).ready(function () {
-
+            $('#addform').parsley()
             mytable = $('.table').DataTable({
                 ajax: 'todo/table',
                 columns: [
@@ -178,6 +185,7 @@
 
         $('#addModal').on("hidden.bs.modal", (e) => {
             $('#addform').trigger('reset')
+            $('#addform').parsley().reset()
         })
 
         $('#editModal').on("hidden.bs.modal", (e) => {
@@ -212,31 +220,38 @@
 
         $('#addform').submit(function (e) {
             e.preventDefault();
-            let data = $(this).serialize();
-            $.ajax({
-                url: 'todo',
-                method: 'POST',
-                data: data,
-                success: function (data) {
 
-                    Swal.fire({
-                        icon: 'success',
-                        text: 'Data Saved',
-                        timer: 3000
-                    })
-                    mytable.ajax.reload();
+            if ($(this).parsley().isValid()) {
+                let data = $(this).serialize();
+                $.ajax({
+                    url: 'todo',
+                    method: 'POST',
+                    data: data,
+                    success: function (data) {
+
+                        Swal.fire({
+                            icon: 'success',
+                            text: 'Data Saved',
+                            timer: 3000
+                        })
+                        mytable.ajax.reload();
 
 
-                },
-                error: function () {
-                    Swal.fire({
-                        icon: 'error',
-                        text: 'Save Failed',
-                        timer: 3000
-                    })
-                }
-            })
-            $('#addModal').modal('hide')
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Save Failed',
+                            timer: 3000
+                        })
+                    }
+                })
+                $('#addModal').modal('hide')
+
+
+            }
+
+
         })
 
         $('#editform').submit(function (e) {

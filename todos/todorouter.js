@@ -38,7 +38,7 @@ todoRouter.get('/table', async (req, res) => {
 
 // })
 todoRouter.post('/', async (req, res) => {
-    await todomodel(req.body).save((err) => {
+    await todomodel.insertMany(req.body,(err) => {
         if (err) {
             res.send('0')
         } else {
@@ -60,7 +60,7 @@ todoRouter.put('/', async (req, res) => {
     if(req.body.date===''){
          req.body.date=req.body.presentdate
     }
-    console.log(req.body);
+
      await todomodel.updateOne({ _id: req.body._id }, {
         $set: {
             title: req.body.title,
@@ -79,10 +79,10 @@ todoRouter.put('/', async (req, res) => {
 })
 
 todoRouter.delete('/', async (req, res) => {
-    console.log(req.body);
+
     await todomodel.deleteMany({ _id: req.body._id }, (err) => {
         if (err) {
-            console.log(err.message);
+
             res.send('0')
         } else {
             res.send('1')
