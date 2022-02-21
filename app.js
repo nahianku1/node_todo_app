@@ -1,9 +1,7 @@
 let express = require('express');
 let mongoose = require('mongoose');
-
 let todorouter = require('./todos/todorouter');
 let app=express();
-
 let PORT=process.env.PORT || 3000;
 
 mongoose.connect('mongodb://localhost/todos',{
