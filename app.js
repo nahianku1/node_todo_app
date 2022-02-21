@@ -1,6 +1,5 @@
 let express = require('express');
 let mongoose = require('mongoose');
-require('dotenv').config()
 let todorouter = require('./todos/todorouter');
 let app = express();
 let PORT = process.env.PORT || 3000;
