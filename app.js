@@ -5,7 +5,7 @@ let app = express();
 let PORT = process.env.PORT || 3000;
 
 
-const uri = `mongodb+srv://nahianku1:bashadmin123@mongo-cluster-1.1b5ei.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+const uri = process.env.MONGODB_URI;
 
 mongoose.connect(uri, {
     useNewUrlParser: true,
