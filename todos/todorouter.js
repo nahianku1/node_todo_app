@@ -46,7 +46,7 @@ todoRouter.post('/checkname', async (req, res) => {
 
 todoRouter.post('/', async (req, res) => {
     if (req.body.date === '') {
-        req.body.date = new Date().toLocaleString();
+        req.body.date = new Date().toUTCString()
 
     }
     console.log(req.body)

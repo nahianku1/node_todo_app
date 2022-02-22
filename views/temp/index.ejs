@@ -175,10 +175,32 @@
                 columns: [
                     { data: 'title' },
                     { data: 'description' },
-                    { data: 'status' },
                     {
                         render: (data, type, row) => {
-                            return new Date(row.date).toLocaleString()
+                            if (row.status === 'pending')
+                                return `<span class="badge badge-lg badge-warning">${row.status}</span>`
+                            else
+                                return `<span class="badge badge-lg badge-success">${row.status}</span>`
+
+                        }
+                    },
+                    {
+                        render: (data, type, row) => {
+                            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                            let oddate = new Date(row.date)
+                            let date = oddate.getDate()
+                            let month = oddate.getMonth()
+                            let hours = oddate.getHours()
+                            let minutes = oddate.getMinutes()
+                            if (hours === 12) {
+                                hours = 0 + ':' + minutes + " AM"
+                            } else if (hours > 12) {
+                                hours = (Number(hours)) - 12 + ':' + minutes + " PM"
+                            } else if (hours < 12) {
+                                hours = hours + ':' + minutes + " AM"
+                            }
+
+                            return date + " " + months[month] + ' ' + hours
                         }
 
                     },
@@ -239,44 +261,45 @@
             $('#editModal').modal('show');
         })
 
+        let isFirst = true
 
         $('#addform').submit(function (e) {
             e.preventDefault();
 
             $(this).parsley().whenValid().then(() => {
                 let data = $(this).serialize();
-                $.ajax({
-                    url: 'todo',
-                    method: 'POST',
-                    data: data,
-                    success: function (data) {
+                if (isFirst) {
+                    $.ajax({
+                        url: 'todo',
+                        method: 'POST',
+                        data: data,
+                        success: function (data) {
 
-                        Swal.fire({
-                            icon: 'success',
-                            text: 'Data Saved',
-                            timer: 2000
-                        })
-                        mytable.ajax.reload();
-
-
-                    },
-                    error: function () {
-                        Swal.fire({
-                            icon: 'error',
-                            text: 'Save Failed',
-                            timer: 2000
-                        })
-                    }
-                })
-                $('#addModal').modal('hide')
+                            Swal.fire({
+                                icon: 'success',
+                                text: 'Data Saved',
+                                timer: 2000
+                            })
+                            mytable.ajax.reload();
 
 
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Save Failed',
+                                timer: 2000
+                            })
+                        }
+                    })
+                    $('#addModal').modal('hide')
+                    isFirst = false
+                }
 
             })
 
-
-
         })
+
 
         $('#editform').submit(function (e) {
             e.preventDefault();
@@ -342,7 +365,7 @@
                         }
                     })
                     $('#editModal').modal('hide')
-                   
+
                 }
             })
 
