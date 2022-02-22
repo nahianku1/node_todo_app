@@ -177,10 +177,13 @@
                     { data: 'description' },
                     {
                         render: (data, type, row) => {
+                            let odstatus=row.status.substr(0,1).toUpperCase()
+                            let mstatus=odstatus+row.status.substr(1)
+
                             if (row.status === 'pending')
-                                return `<span class="badge badge-lg badge-warning">${row.status}</span>`
+                                return `<span class="badge badge-lg badge-warning p-2">${mstatus}</span>`
                             else
-                                return `<span class="badge badge-lg badge-success">${row.status}</span>`
+                                return `<span class="badge badge-lg badge-success p-2">${mstatus}</span>`
 
                         }
                     },
