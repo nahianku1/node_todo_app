@@ -196,7 +196,7 @@
                             let hours = oddate.getHours()
                             let minutes = oddate.getMinutes()
                             if (hours === 12) {
-                                hours = 0 + ':' + minutes + " AM"
+                                hours = hours+':'+minutes+' PM'
                             } else if (hours > 12) {
                                 hours = (Number(hours)) - 12 + ':' + minutes + " PM"
                             } else if (hours < 12) {
