@@ -220,7 +220,7 @@
         $('#addform').parsley().reset()
         $('.addtitle').removeClass('parsley-success')
         $('.addtitle').removeClass('parsley-error')
-        $('.errortext').css('display','none')
+        $('.errortext').hide()
     })
 
     $('#editModal').on("hidden.bs.modal", (e) => {
@@ -262,11 +262,11 @@
         $.ajax({
             url: 'todo/checkname',
             method: 'POST',
-            data: {title:checktitle},
+            data: {title: checktitle},
             success: function (data) {
                 $('.addtitle').addClass('parsley-success')
             },
-            error:function (){
+            error: function () {
                 $('.addtitle').addClass('parsley-error')
                 $('.errortext').show()
 

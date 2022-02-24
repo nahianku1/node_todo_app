@@ -6,9 +6,6 @@ let app = express();
 let PORT = process.env.PORT || 3000;
 
 
-
-
-
 const uri = process.env.MONGODB_URI || 'mongodb://localhost/todos';
 
 mongoose.connect(uri, {
